@@ -1,0 +1,65 @@
+.create-event-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.create-event-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 2.5rem;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.header-section h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.header-section p {
+  color: var(--text-muted);
+}
+
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.input-field.with-icon {
+  padding-left: 3rem;
+}
+
+select.input-field {
+  appearance: none;
+  cursor: pointer;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.mr-4 {
+  margin-right: 1rem;
+}
+
+@media (max-width: 768px) {
+  .create-event-card {
+    padding: 1.5rem;
+  }
+  .header-section h1 {
+    font-size: 1.8rem;
+  }
+}
