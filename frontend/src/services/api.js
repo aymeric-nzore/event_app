@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "https://event-app-backend-1mgd.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "https://event-app-9hw2.onrender.com";
 
 // Helper to get headers
 const getHeaders = () => {
