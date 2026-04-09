@@ -9,6 +9,28 @@ const getHeaders = () => {
   };
 };
 
+// Global response handler to catch 401 Expired Token
+const handleResponse = async (res) => {
+  let data;
+  try {
+    data = await res.json();
+  } catch (e) {
+    data = {};
+  }
+  
+  if (!res.ok) {
+    // Si le token a expiré (401), on vide le cache et on redirige pour forcer la reconnexion
+    if (res.status === 401 && (data.error === "Token invalide" || data.message === "Token invalide")) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      window.location.href = "/login";
+    }
+    throw new Error(data.message || data.error || "Une erreur est survenue");
+  }
+  return data;
+};
+
 export const api = {
   // --- AUTH ---
   async login(UsernameOrEmail, password) {
@@ -17,9 +39,7 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ UsernameOrEmail, password }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error);
-    return data;
+    return handleResponse(res);
   },
   
   async register(username, email, password) {
@@ -28,9 +48,7 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, password }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error);
-    return data;
+    return handleResponse(res);
   },
 
   async logout(refreshToken) {
@@ -52,8 +70,7 @@ export const api = {
       method: "GET",
       headers: getHeaders(),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error);
+    const data = await handleResponse(res);
     return data.events;
   },
 
@@ -63,9 +80,7 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify(eventData),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error);
-    return data;
+    return handleResponse(res);
   },
 
   async joinEvent(eventId) {
@@ -73,9 +88,7 @@ export const api = {
       method: "POST",
       headers: getHeaders(),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error);
-    return data;
+    return handleResponse(res);
   },
 
   async getExpectedUsers(eventId) {
@@ -83,9 +96,7 @@ export const api = {
       method: "GET",
       headers: getHeaders(),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error);
-    return data;
+    return handleResponse(res);
   },
 
   // --- TICKETS ---
@@ -95,8 +106,6 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify({ ticketID }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error);
-    return data;
+    return handleResponse(res);
   }
 };
