@@ -1,4 +1,4 @@
-export const sendQrEmail = async (email, qr, eventName) => {
+export const sendQrEmail = async (email, qr, eventName, token) => {
   try {
     if (!process.env.BREVO_API_KEY) {
       console.error("BREVO_API_KEY manquante dans .env");
@@ -9,6 +9,9 @@ export const sendQrEmail = async (email, qr, eventName) => {
       console.error("BREVO_FROM_EMAIL manquante dans .env");
       throw new Error("Configuration expediteur email manquante");
     }
+
+    // URL dynamique pour le QR code
+    const qrImageUrl = token ? `https://event-app-backend-1mgd.onrender.com/api/ticket/render-qr/${token}` : `data:image/png;base64,${qr}`;
 
     const payload = {
       sender: {
@@ -23,7 +26,7 @@ export const sendQrEmail = async (email, qr, eventName) => {
           <body style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
             <h2>Votre ticket pour ${eventName}</h2>
             <p>Voici votre code QR. Présentez-le à l'entrée de l'évenement.</p>
-            <img src="data:image/png;base64,${qr}" alt="Ticket QR" style="max-width: 400px; margin: 20px 0;" />
+            <img src="${qrImageUrl}" alt="Ticket QR" style="max-width: 400px; margin: 20px 0;" />
             <p style="color: #00ff00; font-size: 12px;">Ticket valide</p>
             <p style="color: #555; font-size: 14px; margin-top: 15px;"><em>(Si l'image ne s'affiche pas, merci d'ouvrir la pièce jointe)</em></p>
           </body>
