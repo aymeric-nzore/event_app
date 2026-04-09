@@ -49,7 +49,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [joinLoading, setJoinLoading] = useState(null);
-  const [location, setLocation] = useState({ lat: 48.8566, lng: 2.3522 }); // Default Paris
+  const [location, setLocation] = useState({ lat: 5.359951, lng: -4.008256 }); // Default Abidjan
   const { user } = useAuth();
   const [joinedMsg, setJoinedMsg] = useState(null);
 
@@ -75,7 +75,7 @@ const Home = () => {
   const fetchEvents = async (lat, lng) => {
     try {
       setLoading(true);
-      const data = await api.getNearbyEvents(lat, lng, 1000); // 1000km par défaut pour test
+      const data = await api.getNearbyEvents(lat, lng, 20000); // 20000km pour tester sans rater d'événements
       setEvents(data || []);
     } catch (err) {
       setError("Impossible de charger les événements.");
