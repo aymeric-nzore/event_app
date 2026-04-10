@@ -68,18 +68,18 @@ Pour faire tourner le projet sur votre machine locale, suivez ces étapes :
 - Un compte [Brevo](https://www.brevo.com/) pour récupérer une clé API email.
 
 ### 2. Cloner le dépôt
-\`\`\`bash
-git clone https://github.com/VOTRE_NOM/event_app.git
+```bash
+git clone https://github.com/aymeric-nzore/event_app.git
 cd event_app
-\`\`\`
+```
 
 ### 3. Configuration du Backend
-\`\`\`bash
+```bash
 cd backend
 npm install
-\`\`\`
+```
 Créez un fichier `.env` dans le dossier `backend` et ajoutez vos variables :
-\`\`\`env
+```env
 PORT=5000
 MONGODB_URI=votre_lien_mongodb
 JWT_ACCESS_SECRET=votre_secret_access
@@ -88,26 +88,26 @@ JWT_TICKET_SECRET=votre_secret_tickets
 BREVO_API_KEY=votre_cle_api_brevo
 BREVO_FROM_EMAIL=votre_email_expediteur@domaine.com
 BREVO_SENDER_NAME="EventHub Team"
-\`\`\`
+```
 Lancez le serveur :
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 ### 4. Configuration du Frontend
 Ouvrez un nouveau terminal et naviguez dans le frontend :
-\`\`\`bash
+```bash
 cd frontend
 npm install
-\`\`\`
+```
 Créez un fichier `.env` dans le dossier `frontend` :
-\`\`\`env
+```env
 VITE_API_URL=http://localhost:5000
-\`\`\`
+```
 Lancer l'application :
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 ---
 
