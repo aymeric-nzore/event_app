@@ -23,11 +23,17 @@ export const sendQrEmail = async (email, qr, eventName) => {
           <body style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
             <h2>Votre ticket pour ${eventName}</h2>
             <p>Voici votre code QR. Présentez-le à l'entrée de l'évenement.</p>
-            <img src="data:image/png;base64,${qr}" alt="Ticket QR" style="max-width: 400px; margin: 20px 0;" />
-            <p style="color: #00ff00; font-size: 12px;">Ticket valide</p>
+            <img src="cid:billet_qr.png" alt="Ticket QR" style="max-width: 400px; margin: 20px 0; border: 2px solid #ccc; border-radius: 8px;" />
+            <p style="color: #00ff00; font-size: 14px; font-weight: bold;">Ticket valide</p>
           </body>
         </html>
       `,
+      attachment: [
+        {
+          name: "billet_qr.png",
+          content: qr,
+        },
+      ],
     };
 
     const response = await fetch("https://api.brevo.com/v3/smtp/email", {
