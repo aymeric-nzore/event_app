@@ -127,7 +127,7 @@ export const joinEvents = async (req, res) => {
     });
     const QrCode = await generateQrCode(token);
     //Envoyez e-mail
-    await sendQrEmail(user.email, QrCode, event.name, token);
+    await sendQrEmail(user.email, QrCode, event.name);
     const userObj = user.toObject();
     delete userObj.password;
     delete userObj.refreshToken;
