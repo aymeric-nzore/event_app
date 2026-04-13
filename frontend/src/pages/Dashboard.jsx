@@ -8,7 +8,6 @@ const Dashboard = () => {
   const [ticketId, setTicketId] = useState('');
   const [scanResult, setScanResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [useCamera, setUseCamera] = useState(true);
   const [stats, setStats] = useState({ expectedUsers: 0, scannedUsers: 0 });
   const lastScannedTicketRef = useRef("");
 
@@ -24,24 +23,6 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error("Erreur stats:", err);
-    }
-  };
-
-  const handleManualSubmit = async (e) => {
-    e.preventDefault();
-    if (!ticketId) return;
-    
-    setLoading(true);
-    setScanResult(null);
-    try {
-      const res = await api.scanTicket(ticketId);
-      setScanResult({ success: true, message: res.message || 'Ticket validé avec succès!' });
-      setTicketId('');
-      fetchStats();
-    } catch (err) {
-      setScanResult({ success: false, message: err.message || 'Ticket invalide ou déjà scanné.' });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -122,46 +103,12 @@ const Dashboard = () => {
       <div className="dashboard-grid">
         <div className="dashboard-card glass-panel text-center">
           <h3>Scanner un billet</h3>
-          <p className="text-muted mb-4">Pointez la caméra vers le QR ou saisissez l'ID.</p>
+          <p className="text-muted mb-4">Pointez la caméra vers le code QR de l'invité.</p>
 
-          <div className="flex gap-4 justify-center mb-6">
-            <button 
-              className={`btn ${useCamera ? 'btn-primary' : 'btn-outline'}`}
-              onClick={() => setUseCamera(true)}
-            >
-              <Camera size={18} /> Caméra
-            </button>
-            <button 
-              className={`btn ${!useCamera ? 'btn-primary' : 'btn-outline'}`}
-              onClick={() => setUseCamera(false)}
-            >
-              <Scan size={18} /> Manuel
-            </button>
+          <div className="camera-container mx-auto">
+             {loading && <p className="text-accent-color font-bold animate-pulse mb-3">Validation en cours...</p>}
+             <QRScanner onScanSuccess={handleQRCapture} />
           </div>
-
-          {!useCamera ? (
-            <form onSubmit={handleManualSubmit} className="scan-form">
-              <div className="input-group">
-                <input
-                  type="text"
-                  placeholder="ID du Billet (ex: 1234-abcd...)"
-                  className="input-field text-center"
-                  value={ticketId}
-                  onChange={(e) => setTicketId(e.target.value)}
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-primary btn-full mt-2" disabled={loading}>
-                <Scan size={18} />
-                <span>{loading ? 'Validation...' : 'Valider'}</span>
-              </button>
-            </form>
-          ) : (
-            <div className="camera-container">
-               {loading && <p className="text-accent-color font-bold animate-pulse">Validation en cours...</p>}
-               <QRScanner onScanSuccess={handleQRCapture} />
-            </div>
-          )}
 
           {scanResult && (
             <div className={`scan-result ${scanResult.success ? 'success' : 'error'} mt-4 p-4 rounded`}>
