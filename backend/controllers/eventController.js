@@ -158,3 +158,25 @@ export const userAttendus = async (req, res) => {
     return res.status(500).json({ message: e.message });
   }
 };
+
+//STATISTIQUES DASHBOARD DU CREATEUR
+export const dashboardStats = async (req, res) => {
+  try {
+    // 1. Trouver les événements du créateur
+    const myEvents = await Event.find({ creator: req.user._id });
+    const eventIds = myEvents.map((e) => e._id);
+    
+    // 2. Compter les billets
+    const expectedUsers = await Ticket.countDocuments({ eventID: { $in: eventIds } });
+    const scannedUsers = await Ticket.countDocuments({ eventID: { $in: eventIds }, used: true });
+    
+    return res.status(200).json({ 
+      success: true, 
+      expectedUsers, 
+      scannedUsers, 
+      totalEvents: myEvents.length 
+    });
+  } catch (e) {
+    return res.status(500).json({ success: false, message: e.message });
+  }
+};

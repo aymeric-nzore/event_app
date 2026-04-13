@@ -99,6 +99,14 @@ export const api = {
     return handleResponse(res);
   },
 
+  async getDashboardStats() {
+    const res = await fetch(`${API_URL}/api/events/dashboard-stats`, {
+      method: "GET",
+      headers: getHeaders(),
+    });
+    return handleResponse(res);
+  },
+
   // --- TICKETS ---
   async scanTicket(ticketID) {
     const res = await fetch(`${API_URL}/api/ticket/scan`, {
